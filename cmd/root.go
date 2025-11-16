@@ -2,12 +2,13 @@ package cmd
 
 import (
 	"os"
+
 	"github.com/spf13/cobra"
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "Hello",
-	Short: "Welcomes the user",
+	Use:   "bassalt",
+	Short: "Root command",
 	Run: func(cmd *cobra.Command, args []string) {
 		cmd.Println("Hello world!")
 	},
@@ -20,6 +21,6 @@ func Execute() {
 	}
 }
 
-func init() {}
-
-
+func init() {
+	rootCmd.AddCommand(authCmd)
+}
