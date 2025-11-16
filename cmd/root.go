@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"oreonproject/basalt/cmd/auth"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -22,5 +23,7 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.AddCommand(authCmd)
+	rootCmd.AddCommand(auth.AuthCmd)
+
+	auth.AuthCmd.AddCommand(auth.GoogleCmd)
 }

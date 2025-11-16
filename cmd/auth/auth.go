@@ -1,10 +1,10 @@
-package cmd
+package auth
 
 import (
 	"github.com/spf13/cobra"
 )
 
-var authCmd = &cobra.Command{
+var AuthCmd = &cobra.Command{
 	Use:   "auth",
 	Short: "Login with cloud providers",
 	Run: func(cmd *cobra.Command, args []string) {
