@@ -1,6 +1,3 @@
-/*
-Copyright © 2025 NAME HERE <EMAIL ADDRESS>
-*/
 package main
 
 import (
@@ -10,9 +7,8 @@ import (
 )
 
 func main() {
-	utils.LogSetup("logs/main.log")
+	utils.LogInit("logs/main")
 	log.Print("Logger was Setup")
 	cmd.Execute()
 	log.Print("Executed root command")
-
 }

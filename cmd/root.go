@@ -10,7 +10,7 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "bassalt",
+	Use:   "basalt",
 	Short: "Root command",
 	Run: func(cmd *cobra.Command, args []string) {
 		cmd.Println("Hello world!")
@@ -19,7 +19,7 @@ var rootCmd = &cobra.Command{
 }
 
 func Execute() {
-	utils.LogSetup("logs/root.log")
+	utils.LogInit("logs/root.log")
 	err := rootCmd.Execute()
 	if err != nil {
 		os.Exit(1)
@@ -27,6 +27,7 @@ func Execute() {
 }
 
 func init() {
+	utils.LogInit("logs/root.log")
 	rootCmd.AddCommand(auth.AuthCmd)
 	auth.AuthCmd.AddCommand(auth.GoogleCmd)
 }
