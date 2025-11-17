@@ -13,14 +13,14 @@ func CodeVerifyKeyGen() []byte {
 
 	key := make([]byte, 32) // creates a new byte slice
 
-	// Use the Read Function from crypto/rand to populate the key with cryptographically secure values
+	// Use the Read Function from crypto/rand to populate the key with cryptographically secure random values
 	crand.Read(key)
 	log.Print("Populated the Key")
 
 	// Initialise a hasher
 	hasher := sha256.New()
-	// Write to the key using the hash digest for key
-	hasher.Write([]byte(key))
+	// Write to the key using the hash digest for key as an extra safeguard
+	hasher.Write(key)
 	log.Println("Code Verification Key Generated")
 	return key
 }
