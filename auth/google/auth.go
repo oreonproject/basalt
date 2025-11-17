@@ -11,16 +11,16 @@ func CodeVerifyKeyGen() []byte {
 	// We will Initialise the logs
 	utils.LogInit("logs/auth.log")
 
-	key := make([]byte, 32) // creates a new byte slice
+	CodeVerifierKey := make([]byte, 32) // creates a new byte slice
 
-	// Use the Read Function from crypto/rand to populate the key with cryptographically secure random values
-	crand.Read(key)
+	// Use the Read Function from crypto/rand to populate the CodeVerifierKey with cryptographically secure random values
+	crand.Read(CodeVerifierKey)
 	log.Print("Populated the Key")
 
 	// Initialise a hasher
 	hasher := sha256.New()
-	// Write to the key using the hash digest for key as an extra safeguard
-	hasher.Write(key)
+	// Write to the CodeVerifierKey using the hash digest for CodeVerifierKey as an extra safeguard
+	hasher.Write(CodeVerifierKey)
 	log.Println("Code Verification Key Generated")
-	return key
+	return CodeVerifierKey
 }
