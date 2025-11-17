@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	utils.LogInit("logs/main")
+	utils.LogInit("logs/main.log")
 	log.Print("Logger was Setup")
 	cmd.Execute()
 	log.Print("Executed root command")
