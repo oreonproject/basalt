@@ -34,8 +34,8 @@ func saveToken(path string, token *oauth2.Token) {
 }
 
 func getTokenFromWeb(config *oauth2.Config) *oauth2.Token {
-	authURL := config.AuthCodeURL("state-token", oauth2.AccessTypeOffline)
-	    fmt.Printf("Go to the following link in your browser then type the code: \n%v\n", authURL)
+	authURL := config.AuthCodeURL("state-token", oauth2.AccessTypeOffline, oauth2.ApprovalForce)
+	fmt.Printf("Go to the following link in your browser then type the code: \n%v\n", authURL)
 	    var code string 
 	    if _, err := fmt.Scan(&code); err != nil {
 		    log.Fatalf("Unable to read code: %v", err)
