@@ -29,5 +29,7 @@ func Execute() {
 func init() {
 	utils.LogInit("logs/root.log")
 	rootCmd.AddCommand(auth.AuthCmd)
+
 	auth.AuthCmd.AddCommand(auth.GoogleCmd)
+	auth.AuthCmd.AddCommand(auth.NextcloudCmd)
 }
