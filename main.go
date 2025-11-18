@@ -15,7 +15,7 @@ func main() {
 	}
 	config, err := google.ConfigFromJSON(b, drive.DriveReadonlyScope)
 	if err != nil {
-		log.Fatalf("Unable to parse client secret file to config: %v")
+		log.Fatalf("Unable to parse client secret file to config: %v", err)
 	}
 	client := authGoogle.GetClient(config)
 	srv, err := drive.New(client)
