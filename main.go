@@ -5,7 +5,8 @@ import (
 	"os"
 	"google.golang.org/api/drive/v3"
 	"golang.org/x/oauth2/google"
-        authGoogle "oreonproject/basalt/auth/google"
+        authGoogle "oreonproject/basalt/cmd/auth"
+
 )
 
 func main() {
