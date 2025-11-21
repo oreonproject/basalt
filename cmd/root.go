@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"log"
-	"oreonproject/basalt/cmd/auth"
 	"oreonproject/basalt/utils"
 	"os"
 
@@ -24,10 +23,4 @@ func Execute() {
 	if err != nil {
 		os.Exit(1)
 	}
-}
-
-func init() {
-	utils.LogInit("logs/root.log")
-	rootCmd.AddCommand(auth.AuthCmd)
-	auth.AuthCmd.AddCommand(auth.GoogleCmd)
 }
