@@ -12,18 +12,20 @@ import (
 )
 
 func tokenFromFile(file string) (*oauth2.Token, error) {
-	f, err := os.Open(file)
+	f, err := os.Open(file) // Opens file from path
 	if err != nil {
 		return nil, err
 	}
 	defer f.Close()
-	tok := &oauth2.Token{}
+
+	tok := &oauth2.Token{} // Stores token retrieved from file in Token Struct
 	err = json.NewDecoder(f).Decode(tok)
 	return tok, err
 }
 
 func saveToken(path string, token *oauth2.Token) {
-	fmt.Printf("Saving credential file to %s\n", path)
+	// This method of storage is insecure, will be replaced in the future
+	fmt.Printf("Saving credential file to %s\n", path) // Saves Credential to file
 	f, err := os.Create(path)
 	if err != nil {
 		log.Fatalf("Unable to cache OAuth token: %v", err)
