@@ -2,23 +2,32 @@ package authGoogle
 
 import (
 	"fmt"
-
-	"golang.org/x/oauth2"
-	"golang.org/x/oauth2/google"
+	"net/url"
+	"strings"
 )
 
-func CraftAuthURI() {
-	conf := oauth2.Config{
-		ClientID:    "844897693697-23j2de25lbf5fdmsh5lfs3hn0fr9kkh3.apps.googleusercontent.com",
-		Endpoint:    google.Endpoint,
-		RedirectURL: "http://127.0.0.1:8080/callback",
-		Scopes: []string{
-			"https://www.googleapis.com/auth/drive",
-			"https://www.googleapis.com/auth/calendar",
-		},
+func CraftAuthURI() string {
+	authServer := "https://accounts.google.com/o/oauth2/v2/auth"
+	params := url.Values{}
+	redirect := &url.URL{
+		Scheme: "http",
+		Host:   "localhost:8080",
+		Path:   "/",
 	}
-	url := conf.AuthCodeURL(StateTokGen(), oauth2.AccessTypeOnline, oauth2.S256ChallengeOption(CodeVerifierKeyGen()))
 
-	fmt.Printf("%v", url)
+	params.Add("client_id", "844897693697-23j2de25lbf5fdmsh5lfs3hn0fr9kkh3.apps.googleusercontent.com")
+	params.Add("access_type", "offline")
+	params.Add("redirect_uri", redirect.String())
+	params.Add("include_granted_scopes", "true")
+	params.Add("response_type", "code")
+	params.Add("scope", strings.Join([]string{"openid", "https://www.googleapis.com/auth/calendar", "https://www.googleapis.com/auth/drive"}, " "))
+	params.Add("code_challenge", CodeChallengeGen())
+	params.Add("code_challenge_method", "S256")
+	params.Add("state", StateTokGen())
+
+	authURL := fmt.Sprintf("%s?%s", authServer, params.Encode())
+	authURL = strings.ReplaceAll(authURL, "+", "%20")
+	fmt.Println(authURL)
+	return authURL
 
 }
