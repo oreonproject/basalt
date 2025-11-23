@@ -10,7 +10,7 @@ import (
 
 func CodeVerifierKeyGen() []byte {
 	// We will Initialise the logs
-	log := utils.LogInit("logs/oauth.log")
+	log := utils.LogInit("oauth.log")
 	codeVerifierKey := make([]byte, 32) // creates a new byte slice
 
 	// Use the Read Function from crypto/rand to populate the codeVerifier with cryptographically secure random values

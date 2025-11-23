@@ -8,7 +8,7 @@ import (
 )
 
 func CraftAuthURI() string {
-	log := utils.LogInit("logs/authReq.log")
+	log := utils.LogInit("authReq.log")
 	authServer := "https://accounts.google.com/o/oauth2/v2/auth" // Defines the base Auth server to send the request to
 	// Creates a Values struct to hold the Key and Value pairs for OAuth2
 	params := url.Values{}

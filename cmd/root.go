@@ -19,7 +19,7 @@ var rootCmd = &cobra.Command{
 }
 
 func Execute() {
-	utils.LogInit("logs/root.log")
+	utils.LogInit("root.log")
 	err := rootCmd.Execute()
 	if err != nil {
 		os.Exit(1)
@@ -27,7 +27,7 @@ func Execute() {
 }
 
 func init() {
-	utils.LogInit("logs/root.log")
+	utils.LogInit("root.log")
 	rootCmd.AddCommand(auth.AuthCmd)
 	rootCmd.AddCommand(auth.GoogleCmd)
 	rootCmd.AddCommand(auth.NextcloudCmd)
