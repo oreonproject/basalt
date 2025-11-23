@@ -1,3 +1,5 @@
 .env
 basalt
 logs/
+credentials.json
+token.json
