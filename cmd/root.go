@@ -3,11 +3,14 @@ package cmd
 import (
 	"log"
 	"oreonproject/basalt/cmd/auth"
+	"oreonproject/basalt/oauth/nextcloud"
 	"oreonproject/basalt/utils"
 	"os"
 
 	"github.com/spf13/cobra"
 )
+
+var ServiceName = "basalt"
 
 var rootCmd = &cobra.Command{
 	Use:   "basalt",
@@ -30,5 +33,5 @@ func init() {
 	utils.LogInit("root.log")
 	rootCmd.AddCommand(auth.AuthCmd)
 	rootCmd.AddCommand(auth.GoogleCmd)
-	rootCmd.AddCommand(auth.NextcloudCmd)
+	rootCmd.AddCommand(nextcloud.NextcloudCmd)
 }

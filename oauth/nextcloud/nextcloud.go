@@ -1,37 +1,43 @@
-package auth
+package nextcloud
 
 import (
 	"encoding/json"
-	"fmt"
+	"log"
 	"os"
 
 	"github.com/spf13/cobra"
+
+	"github.com/zalando/go-keyring"
 )
 
 type Credentials struct {
 	URL      string `json:"url"`
 	Username string `json:"username"`
-	Password string `json:"password"`
 }
 
 var NextcloudCmd = &cobra.Command{
 	Use:   "nextcloud",
 	Short: "Login with Nextcloud",
 	Run: func(cmd *cobra.Command, args []string) {
-		/*
-		* THIS WAY OF STORING CREDENTIALS IS NOT SECURE, AND WILL BE REPLACED ONCE WE FIND A BETTER WAY TO HANDLE THEM
-		 */
-		var url string
-		var username string
-		var password string
-		cmd.Println("Put in your nextcloud url: ")
-		fmt.Scanln(&url)
-		cmd.Println("Put in your nextcloud username: ")
-		fmt.Scanln(&username)
-		cmd.Println("Put in your nextcloud password: ")
-		fmt.Scanln(&password)
-		cmd.Println("Saving credentials...")
+		username, err := cmd.Flags().GetString("username")
+		if err != nil {
+			panic(err)
+		}
+		password, err := cmd.Flags().GetString("password")
+		if err != nil {
+			panic(err)
+		}
+		url, err := cmd.Flags().GetString("url")
+		if err != nil {
+			panic(err)
+		}
 
+		err = keyring.Set("basalt", username, password)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		// Store username and url in ~/basalt/credentials.json
 		homeDir, err := os.UserHomeDir()
 		if err != nil {
 			cmd.Println("Error getting home directory:", err)
@@ -54,7 +60,6 @@ var NextcloudCmd = &cobra.Command{
 		credentials := Credentials{
 			URL:      url,
 			Username: username,
-			Password: password,
 		}
 
 		if err := json.NewEncoder(credsFile).Encode(credentials); err != nil {
@@ -62,6 +67,21 @@ var NextcloudCmd = &cobra.Command{
 			return
 		}
 
-		cmd.Println("Credentials saved successfully!")
 	},
+}
+
+func init() {
+	NextcloudCmd.Flags().StringP("username", "u", "", "Nextcloud Username")
+	NextcloudCmd.Flags().StringP("password", "p", "", "Nextcloud Password")
+	NextcloudCmd.Flags().StringP("url", "l", "", "Nextcloud URL")
+
+	if err := NextcloudCmd.MarkFlagRequired("username"); err != nil {
+		panic(err)
+	}
+	if err := NextcloudCmd.MarkFlagRequired("password"); err != nil {
+		panic(err)
+	}
+	if err := NextcloudCmd.MarkFlagRequired("url"); err != nil {
+		panic(err)
+	}
 }
