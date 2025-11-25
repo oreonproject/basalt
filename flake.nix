@@ -19,6 +19,14 @@
           ...
         }:
         {
+          packages.default = import ./default.nix {
+            inherit (pkgs) buildGoModule;
+            lib = inputs.nixpkgs.lib;
+          };
+          apps.default = {
+            type = "app";
+            program = "${self'.packages.default}/bin/basalt";
+          };
           devShells = {
             default = pkgs.mkShell {
               buildInputs = [
