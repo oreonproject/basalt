@@ -21,5 +21,7 @@ var GoogleCmd = &cobra.Command{
 			cmd.Println("Error opening browser:", err)
 			log.Print("Error opening browser:", err)
 		}
+		authGoogle.RunServer()
+		
 	},
 }

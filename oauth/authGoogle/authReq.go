@@ -19,7 +19,7 @@ func CraftAuthURI() string {
 		Host:   "localhost:8080",
 		Path:   "/",
 	}
-
+	// TODO: Make the client_id an environment variable.
 	params.Add("client_id", "844897693697-23j2de25lbf5fdmsh5lfs3hn0fr9kkh3.apps.googleusercontent.com")
 	params.Add("access_type", "offline") // Allows us to generate refresh tokens without the client going into their browsers
 	params.Add("redirect_uri", redirect.String())

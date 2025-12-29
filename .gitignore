@@ -4,3 +4,4 @@ logs/
 credentials.json
 token.json
 result
+.secret
