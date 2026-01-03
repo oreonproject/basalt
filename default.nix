@@ -18,7 +18,6 @@ buildGoModule rec {
     license = lib.licenses.gpl3Only;
     maintainers = with lib.maintainers; [
       Simon-Weij
-      Pancaakeman
       johndavedosn
       taxmalalas0001
     ];
