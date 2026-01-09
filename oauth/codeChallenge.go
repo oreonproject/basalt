@@ -5,37 +5,31 @@ import (
 	"crypto/sha256"
 	"encoding/base64"
 	"oreonproject/basalt/utils"
-	"strings"
 )
 
-func CodeVerifierKeyGen() []byte {
-	// We will Initialise the logs
+func CodeVerifierKeyGen() string {
 	log := utils.LogInit("oauth.log")
-	codeVerifierKey := make([]byte, 32) // creates a new byte slice
 
-	// Use the Read Function from crypto/rand to populate the codeVerifier with cryptographically secure random values
-	crand.Read(codeVerifierKey)
+	verifier := make([]byte, 32)
+	crand.Read(verifier)
+
+	verifierStr := base64.RawURLEncoding.EncodeToString(verifier)
 	log.Println("Code Verification Key Generated")
-
-	return codeVerifierKey
+	return verifierStr
 }
 
-func CodeChallengeGen() string {
-
-	CodeVerifier := CodeVerifierKeyGen()
-
-	hasher := sha256.New()
-	hasher.Write(CodeVerifier)
-
-	challenge := base64.RawURLEncoding.EncodeToString(CodeVerifier)
-
+// Generate code challenge from a verifier
+func CodeChallengeGen(verifier string) string {
+	hash := sha256.Sum256([]byte(verifier))
+	challenge := base64.RawURLEncoding.EncodeToString(hash[:])
 	return challenge
 }
-func StateTokGen() string {
-	stateTok := make([]byte, 16)
-	crand.Read(stateTok) // Populates State Token
 
-	state := base64.RawURLEncoding.EncodeToString(stateTok) // Encodes state to base64 for added protections
-	state = strings.ReplaceAll(state, "%", "")
+func StateTokGen() string {
+	log := utils.LogInit("oauth.log")
+	stateTok := make([]byte, 16)
+	crand.Read(stateTok)
+	state := base64.RawURLEncoding.EncodeToString(stateTok)
+	log.Println("State Token Generated")
 	return state
 }

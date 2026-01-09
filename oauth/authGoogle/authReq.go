@@ -7,6 +7,7 @@ import (
 	"oreonproject/basalt/utils"
 	"strings"
 	"os"
+	"github.com/zalando/go-keyring"
 	"github.com/joho/godotenv"
 )
 
@@ -30,13 +31,18 @@ func CraftAuthURI() string {
 		Host:   "localhost:8080",
 		Path:   "/",
 	}
+	verifier := oauth.CodeVerifierKeyGen()
+	if err := keyring.Set("basalt", "code_verifier", verifier); err != nil {
+		log.Fatalf("Failed to save code verifier to keyring: %v", err)
+	}
+
 	params.Add("client_id", clientID)
 	params.Add("access_type", "offline") // Allows us to generate refresh tokens without the client going into their browsers
 	params.Add("redirect_uri", redirect.String())
 	params.Add("include_granted_scopes", "true")
 	params.Add("response_type", "code")                                                                                                             // Response type is an AuthCode
 	params.Add("scope", strings.Join([]string{"openid", "https://www.googleapis.com/auth/calendar", "https://www.googleapis.com/auth/drive"}, " ")) // our scopes
-	params.Add("code_challenge", oauth.CodeChallengeGen())                                                                                          // Generates a Code Challenge
+	params.Add("code_challenge", oauth.CodeChallengeGen(verifier))                                                                                          // Generates a Code Challenge
 	params.Add("code_challenge_method", "S256")                                                                                                     // Code Challenge method is a base64 RAWURLENCODED SHA256 hash of the CodeVerifier
 	params.Add("state", oauth.StateTokGen())                                                                                                        // Generates a State Token to Prevent Cross Site Request Forgery
 
