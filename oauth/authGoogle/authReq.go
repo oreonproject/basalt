@@ -6,10 +6,21 @@ import (
 	"oreonproject/basalt/oauth"
 	"oreonproject/basalt/utils"
 	"strings"
+	"os"
+	"github.com/joho/godotenv"
 )
 
 func CraftAuthURI() string {
 	log := utils.LogInit("authReq.log")
+	err := godotenv.Load()
+	if err != nil {
+		log.Printf("Failed to load envrionment file: %v", err)
+	}
+	clientID := os.Getenv("CLIENT_ID")
+	if clientID == ""{
+		log.Fatal("CLIENT_ID is not set.")
+	}
+
 	authServer := "https://accounts.google.com/o/oauth2/v2/auth" // Defines the base Auth server to send the request to
 	// Creates a Values struct to hold the Key and Value pairs for OAuth2
 	params := url.Values{}
@@ -19,8 +30,7 @@ func CraftAuthURI() string {
 		Host:   "localhost:8080",
 		Path:   "/",
 	}
-	// TODO: Make the client_id an environment variable.
-	params.Add("client_id", "844897693697-23j2de25lbf5fdmsh5lfs3hn0fr9kkh3.apps.googleusercontent.com")
+	params.Add("client_id", clientID)
 	params.Add("access_type", "offline") // Allows us to generate refresh tokens without the client going into their browsers
 	params.Add("redirect_uri", redirect.String())
 	params.Add("include_granted_scopes", "true")
