@@ -34,13 +34,9 @@ func oauthHandler(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 	defer resp.Body.Close()
-	err = keyring.Set("basalt", "user", code)
-	if err != nil {
-		log.Printf("Failed to save token to keyring: %v", err)
-	}
 	respBody, _ := io.ReadAll(resp.Body)
 
-	var tokenData map[string]interface{}
+	var tokenData map[string]any
 	if err := json.Unmarshal(respBody, &tokenData); err != nil {
 		log.Fatalf("Failed to parse response: %v", err)
 	}

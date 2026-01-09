@@ -31,7 +31,6 @@ func Execute() {
 
 func init() {
 	utils.LogInit("root.log")
-	rootCmd.AddCommand(auth.AuthCmd)
 	rootCmd.AddCommand(auth.GoogleCmd)
 	rootCmd.AddCommand(nextcloud.NextcloudCmd)
 }
