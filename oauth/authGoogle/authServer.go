@@ -4,22 +4,15 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
+	"github.com/zalando/go-keyring"
 )
 
 
 func oauthHandler(w http.ResponseWriter, r *http.Request) {
  	code := r.URL.Query().Get("code")
-	sec_file, err := os.Create(".secret")
-	defer sec_file.Close()
+	err := keyring.Set("basalt", "user", code)
 	if err != nil {
-		log.Printf("Error opening secret file: %v", err)
-
-		return
-	}
-	_, err = sec_file.WriteString(code)
-	if err != nil {
-		log.Printf("Writing to secret file failed: %v", err)
+		log.Printf("Failed to save token to keyring: %v", err)
 	}
 	fmt.Fprintf(w, "Authentication success,  you may close this window.")
 }
